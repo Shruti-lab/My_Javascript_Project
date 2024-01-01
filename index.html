@@ -3,16 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="refresh" content="1"> -->
     <title>Guess the Number</title>
+    <style>
+        .instruction {
+            font-size: 20px;
+        }
+        div div h3 {
+            color: aliceblue;
+            font-size: 30px;
+        }
+        body div {
+            padding-top: 20px;
+            width: 80%;
+            margin: auto;
+
+        }
+        .check{
+            font-size: 25px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: rgb(218, 255, 6);
+            background-color: black;
+            padding: 10px 10px;
+            border-radius: 10px;
+        }
+        .replay{
+            font-size: 25px;
+            margin-top: 10px;
+            color: aquamarine;
+            background-color: black;
+            padding: 10px 10px;
+            border-radius: 10px;
+            
+        }
+        #user_input {
+            font-size: 20px;
+        }
+        
+    </style>
 </head>
 <body>
-    <h1>Welcome to Guess the Number Game!</h1>
-    <h3>This is a simple Javascript based Guessing the number game. Guess the number between 1 to 100 in 10 tries and you WIN!</h3>
     <div>
-        <div><input type="text" placeholder="Ente your guess here..."></div>
-        <button type="button">Check my guess</button>
-        <div><span>Your guessed numbers: </span><span id="outputs"></span></div>
+    <h1>Welcome to Guess the Number Game!</h1>
+    <h3 class="instruction">This is a simple Javascript based Guessing the number game. Guess the number between 1 to 100 in 10 tries and you WIN!</h3>
+    <div>
+        <div><input type="number" placeholder="Ente your guess here..." id="user_input"></div>
+        <button type="button" class="check">Check my guess</button>
+        <div><span>Your guessed numbers: </span><span id="guesses"></span></div>
+        <div><h3 id="result"></h3></div>
+        <button class="replay" hidden type="button" onClick="window.location.reload();">Try Again</button>
     </div>
+   </div>
     
 </body>
+<script>
+    const result = document.getElementById("result");
+    const guessedNos = document.getElementById("guesses");
+    const input = document.getElementById("user_input");
+    const button = document.querySelector("button");
+    const replay = document.getElementsByClassName("replay");
+    var guessCount = 0;
+    const num = Math.floor(Math.random()*100);
+    console.log(num);
+
+    button.addEventListener("click",checkInput);
+
+    function checkInput(){
+        guessCount++;
+        let text = input.value;
+        console.log(text);
+        if(guessCount<=10){
+            if(num==text){
+            result.innerText = `You won! You guessed the right number in ${guessCount} guesses. Want to play again?`;
+            result.style.backgroundColor = "green";
+        }
+        else{
+            result.style.backgroundColor = "red";
+            if(num>text){
+                result.innerText = "Uh Oh!. You guessed it wrong. Your guess was too low. Try again!";
+            }else{
+                result.innerText = "Uh Oh!. You guessed it wrong. Your guess was too high. Try again!";
+            }
+            guessedNos.textContent  = `${guessedNos.textContent} ${text}`;
+            // console.log(guessedNos.textContent);
+        }
+        }else{
+            input.setAttribute("disabled","true");
+            setInterval(() => {
+                result.innerText = "Uhoh! you ran out of chances. Wanna play again?";
+            }, 2000);
+            let toggle = () => {
+            result.removeAttribute("hidden");
+            let attrispresent = replay.getAttribute("hidden");
+            console.log(attrispresent);
+            if(attrispresent){
+                result.removeAttribute("hidden");
+            }
+        }
+            }
+        }
+
+</script>
+
 </html>
