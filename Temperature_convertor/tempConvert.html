@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/tempConvert.css">
+</head>
+<body>
+    <div class="convertArea">
+        <div class="container">
+            <div class="row" style="text-align: center; background-color:rgb(207, 252, 255); border-radius: 10px;">
+                <div class="col"><h1>Temperature Converter</h1></div>
+            </div>
+            <div class="row border border-primary rounded">
+                <form>
+                <div class="col" style="padding: 30px;">
+                    <div class="row">
+                        <div class="col-xl-9">
+                            <div class="mb-3">
+                                <label for="inputtemp" class="form-label" style="font-size: 24px; font-weight: 400;">Enter Temperature:</label>
+                                <input type="float" class="form-control form-control-lg" value="0" id="inputtemp" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-3" style="display:flex; flex-direction: column-wrap; align-items:center; padding-top: 25px;">
+                            <!-- style="padding-top: 53px; height: 100px;" -->
+                            <div class="btn-grp" > 
+                                <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Units</button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" value="cel">°C</a></li> <!--Place the cursor where you want to insert the degree symbol. On your keyboard, press Alt + 0176.-->
+                                    <li><a class="dropdown-item" href="#">°F</a></li>
+                                    <li><a class="dropdown-item" href="#">K</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                      <div style="padding-top: 20px; font-size: 24px; font-weight: 400;">
+                        <label for="tempunits" >Convert in:</label>
+                        <select name="tempunits" id="tempunits" style="padding: 3px; width: 50vw; max-width: 300px; font-size: 20px;">
+                            <option value="celsius">Celsius  °C</option>
+                            <option value="fahrenheit">Fahrenheit  °F</option>
+                            <option value="kelvin">Kelvin  K</option>
+                        </select>
+                      </div> 
+                      <div style="margin-top: 4vw; display: flex; flex-direction:row;">
+                        <div style="justify-content: center; margin: auto;" >
+                        <button class="btn btn-outline-danger btn-lg" id="convert" type="submit">Convert</button>
+                    </div>
+                      </div> 
+                </div>
+            </form>
+                <div class="col" style="background-color: #0099ff;">
+                    <div style="height: 100%; width:100%;">
+                        <h1 style="font-size: xxx-large; color: aliceblue; text-align: center; margin-top: 40%; margin-bottom: 40%;" id="result">0°C</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(".dropdown-menu li a").click(function(){
+            var seltext = $(this).text();
+            $(this).parents('.btn-grp').find(".dropdown-toggle").html(seltext);  /*can also write .text(seltext);*/
+        })
+
+        $("#convert").click(()=>{
+            /* to get temperature input value*/
+            var tempinput = $("#inputtemp").val();
+            var temp1 = parseFloat(tempinput);
+            console.log(typeof(temp1));
+
+            var unit1 = $('.btn-grp').find(".dropdown-toggle").html();  //getting initial units
+            var unit2 = $('#tempunits').val();
+            console.log(unit1);
+
+            switch(unit1){
+                case "Units": $('#result').text('Mention proper units.'); break;
+                case "°C": if(unit2=="fahrenheit"){
+                    $('#result').text(((temp1*(9/5))+32).toFixed(2)+'°F');
+                }else if(unit2=="kelvin"){
+                    $('#result').text((temp1+273.15).toFixed(2)+'K');
+                }
+
+                  break;
+                
+                case "K" && "celsius": if(unit2=="celsius"){
+                     $('#result').text((temp1-273.15).toFixed(2)+'°C');
+                    } else if(unit2="fahrenheit"){
+                        $('#result').text(((temp1 - 273.15) *(9/5) + 32).toFixed(2)+'°F');
+                    }
+                
+                break;
+                
+                case "°F": if(unit2=="celsius"){
+                    $('#result').text(((temp1 - 32) * 5/9).toFixed(2)+'°C');
+                }else if(unit2=="kelvin"){
+                    $('#result').text(((temp1 - 32) * 5/9 + 273.15).toFixed(2)+'K');
+                } 
+                break;
+                default: $('#result').text('0');
+            }
+        })
+        /*$() The $() function is shorthand for the getElementByID method, which, as noted above, returns the ID of a specific element of an HTML DOM. It's frequently used for manipulating elements in a document. $() allows for shorter and more efficient JavaScript coding.*/
+    </script>
+</body>
+</html>
